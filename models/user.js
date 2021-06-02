@@ -10,5 +10,6 @@ var User = new Schema({
 });
 
 User.plugin(passportLocalMongoose);
+//git test
 
 module.exports = mongoose.model('User', User);
