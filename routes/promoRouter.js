@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const authenticate = require('../authenticate');
+const cors = require('./cors');
+
 
 
 const Promotion = require('../models/promotions');
@@ -11,7 +13,10 @@ const promoRouter = express.Router();
 promoRouter.use(bodyParser.json());
 
 promoRouter.route('/')
-.get((req,res,next) =>{
+.options(cors.corsWithOptions,(req,res)=>{
+    res.sendStatus(200);
+})
+.get(cors.cors,(req,res,next) =>{
     Promotion.find({})
     .then((Promotions)=>{
         res.statusCode=200;
@@ -20,7 +25,7 @@ promoRouter.route('/')
     },(err)=>next(err))
     .catch((err)=>next(err));
 })
-.post(authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
+.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
     Promotion.create(req.body)
     .then((Promotions)=>{
         console.log('Dish Created',Promotions);
@@ -31,11 +36,11 @@ promoRouter.route('/')
     },(err)=>next(err))
     .catch((err)=>next(err));
 })
-.put(authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
     res.statusCode = 403;
     res.end('Put operation not supported on /Promotions');
 })
-.delete(authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
+.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
     Promotion.remove({})
     .then((resp)=>{
         res.statusCode=200;
@@ -46,7 +51,7 @@ promoRouter.route('/')
 });
 
 promoRouter.route('/:promoId')
-.get((req,res,next) =>{
+.get(cors.cors,(req,res,next) =>{
     Promotion.findById(req.params.promoId)
     .then((Promotions)=>{
         res.statusCode=200;
@@ -55,10 +60,10 @@ promoRouter.route('/:promoId')
     },(err)=>next(err))
     .catch((err)=>next(err));
 })
-.post(authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
+.post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
     res.end('Post operation not supported on /promo/' + req.params.dishId);
 })
-.put(authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
+.put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
     Promotion.findByIdAndUpdate(req.params.promoId,{
         $set:req.body
     },{new:true})   
