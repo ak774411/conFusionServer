@@ -7,7 +7,7 @@ ConFusionServer is a Node.Js Api for dealing with Menu recipe.
 Use git clone https://github.com/ak774411/conFusionServer.git to install ConFusionServer.
 
 ```bash
-pip install foobar
+git clone https://github.com/ak774411/conFusionServer.git
 ```
 
 ## Usage
