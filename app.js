@@ -16,6 +16,8 @@ var leaderRouter = require('./routes/leaderRouter');
 var promoRouter = require('./routes/promoRouter');
 var favouriteRouter = require('./routes/favoriteRouter');
 var uploadRouter = require('./routes/uploadRouter');
+var commentRouter = require('./routes/commentRouter');
+
 
 const mongoose = require('mongoose');
 
@@ -78,10 +80,12 @@ else {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/dishes' , dishRouter);
-app.use('/leader', leaderRouter);
-app.use('/promo', promoRouter);
-app.use('/favourite', favouriteRouter);
+app.use('/leaders', leaderRouter);
+app.use('/promotions', promoRouter);
+app.use('/favorites', favouriteRouter);
 app.use('/imageUpload',uploadRouter);
+app.use('/comments',commentRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

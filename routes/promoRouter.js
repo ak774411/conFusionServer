@@ -17,7 +17,7 @@ promoRouter.route('/')
     res.sendStatus(200);
 })
 .get(cors.cors,(req,res,next) =>{
-    Promotion.find({})
+    Promotion.find(req.query)
     .then((Promotions)=>{
         res.statusCode=200;
         res.setHeader('Content-Type','application/json');
