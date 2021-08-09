@@ -4,6 +4,16 @@ const mongoose = require('mongoose');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
 
+var nodemailer = require('nodemailer');
+
+var mailTransport = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'yuenming54@gmail.com',
+      pass: 'wittbncfhocouxxw',
+    },
+  });
+
 
 const feedback = require('../models/feedback');
 
@@ -31,6 +41,19 @@ feedbackRouter.route('/')
         res.statusCode=200;
         res.setHeader('Content-Type','application/json');
         res.json(feedbacks);
+        mailTransport.sendMail(
+            {
+              from: 'michaelcheng <yuenming54@gmail.com>',
+              to: 'michael <michael@chengyuenming.com>',
+              subject: 'Hi :)',
+              html: '<h1>Hello</h1><p>Nice to meet you.</p>',
+            },
+            function(err) {
+              if (err) {
+                console.log('Unable to send email: ' + err);
+              }
+            },
+          );
 
     },(err)=>next(err))
     .catch((err)=>next(err));
